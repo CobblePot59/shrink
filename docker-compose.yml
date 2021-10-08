@@ -7,7 +7,9 @@ services:
     container_name: shrink
     restart: always
     volumes: 
-        - ./volumes/app:/opt/shrink
+      - ./volumes/app:/opt/shrink
+    environment:
+      - URL=http://shrink.cobblepot59.int/
   rp:
     image: nginx:alpine
     container_name: shrink-rp
