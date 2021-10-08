@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from hashids import Hashids
-
+import os
+import validators
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -18,18 +19,18 @@ def index():
     if request.method == 'POST':
         url = request.form['url']
 
-        if not url:
-            flash('The URL is required!')
+        if not validators.url(url):
+            flash('A valid URL is required!')
             return redirect(url_for('index'))
 
         url_data = Urls(original_url = url)
         db.session.add(url_data)
         db.session.commit()
 
-        short_url = request.host_url + hashids.encode(url_data.id)
+        short_url = os.getenv('URL') + hashids.encode(url_data.id)
         return render_template('index.html', short_url=short_url)
-
-    return render_template('index.html')
+    else:
+        return render_template('index.html')
 
 
 @app.route('/<id>')
@@ -45,8 +46,7 @@ def url_redirect(id):
         original_url = url_data.original_url
         return redirect(original_url)
     else:
-        flash('Invalid URL')
-        return redirect(url_for('index'))
+        return 'Not Found'
 
 @app.route('/stats')
 def stats():
@@ -54,11 +54,9 @@ def stats():
     db_urls = Urls.query.all()
     for obj in db_urls:
        url = obj.__dict__
-       url['short_url'] = request.host_url + hashids.encode(url['id'])
+       url['short_url'] = os.getenv('URL') + hashids.encode(url['id'])
        urls.append(url)
-
     return render_template('stats.html', urls=urls)
-
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=80)
