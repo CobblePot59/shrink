@@ -9,7 +9,7 @@ services:
     volumes: 
       - ./volumes/app:/opt/shrink
     environment:
-      - URL=http://shrink.cobblepot59.int/
+      - URL=http://www.shrink.int/
   rp:
     image: nginx:alpine
     container_name: shrink-rp
@@ -19,7 +19,7 @@ services:
       #- "443:443"
     volumes:
       - ./volumes/rp/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
-      #- ./volumes/rp/ssl/shrink.cobblepot59.int.crt:/etc/ssl/certs/shrink.cobblepot59.int.crt:ro
-      #- ./volumes/rp/ssl/shrink.cobblepot59.int.key:/etc/ssl/private/shrink.cobblepot59.int.key:ro
+      #- ./volumes/rp/ssl/www.shrink.int.crt:/etc/ssl/certs/www.shrink.int.crt:ro
+      #- ./volumes/rp/ssl/www.shrink.int.key:/etc/ssl/private/www.shrink.int.key:ro
     environment:
-      - NGINX_HOST=shrink.cobblepot59.int
+      - NGINX_HOST=www.shrink.int
