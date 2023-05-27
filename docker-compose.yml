@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  app:
+    build: BUILD
+    image: shrink
+    container_name: shrink
+    restart: always
+    volumes:
+      - ./volumes/app:/opt/shrink
+    environment:
+      - URL=http://www.shrink.int/
+  rp:
+    image: nginx:alpine
+    container_name: shrink-rp
+    restart: always
+    ports:
+       - "80:80"
+      #- "443:443"
+    volumes:
+      - ./volumes/rp/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
+      #- ./volumes/rp/ssl/www.shrink.int.crt:/etc/ssl/certs/www.shrink.int.crt:ro
+      #- ./volumes/rp/ssl/www.shrink.int.key:/etc/ssl/private/www.shrink.int.key:ro
+    environment:
+      - NGINX_HOST=www.shrink.int
