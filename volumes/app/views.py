@@ -1,6 +1,6 @@
 from flask import render_template, request, flash, redirect, url_for
 from app import app, db, hashids
-from models import *
+from models import Urls
 import os
 import validators
 
