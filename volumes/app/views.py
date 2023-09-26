@@ -10,7 +10,7 @@ def index():
         url = request.form['url']
 
         if not validators.url(url):
-            flash('A valid URL is required!', 'danger')
+            flash('A valid URL is required!', 'error')
             return redirect(url_for('index'))
 
         url_data = Urls(original_url = url)
