@@ -1,4 +1,4 @@
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect, url_for, abort
 from app import app, db, hashids
 from models import Urls
 import os
@@ -36,7 +36,7 @@ def url_redirect(id):
         original_url = url_data.original_url
         return redirect(original_url)
     else:
-        return 'Not Found'
+        abort(404)
 
 @app.route('/stats')
 def stats():
